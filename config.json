@@ -1,0 +1,23 @@
+{
+  "meta": {
+    "name": "Money & More",
+    "url": "https://moneyandmore.live",
+    "about": "The enterprise Jumalauta streaming service",
+    "tags": [
+      "demoscene",
+      "music",
+      "art",
+      "streaming",
+      "owncast"
+    ],
+    "links": [
+      {
+        "platform": "Pouet",
+        "url": "http://www.pouet.net/groups.php?which=325"
+      }
+    ]
+  },
+  "server": {
+    "streamKey": "key"
+  }
+}

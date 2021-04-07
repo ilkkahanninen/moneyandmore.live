@@ -1,0 +1,12 @@
+services:
+  owncast:
+    build:
+      context: .
+      dockerfile: owncast/Dockerfile
+    ports:
+      - "8080:8080"
+      - "1935:1935"
+    volumes:
+      - "owncast_data:/app/data"
+volumes:
+  owncast_data: {}
