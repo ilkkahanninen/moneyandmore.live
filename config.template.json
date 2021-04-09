@@ -1,5 +1,8 @@
 {
   "domain": "localhost",
+  "server": {
+    "streamKey": "key"
+  },
   "meta": {
     "name": "Money & More",
     "url": "https://moneyandmore.live",
@@ -17,8 +20,5 @@
         "url": "http://www.pouet.net/groups.php?which=325"
       }
     ]
-  },
-  "server": {
-    "streamKey": "key"
   }
 }
