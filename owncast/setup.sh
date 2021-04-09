@@ -1,6 +1,6 @@
 #!/bin/sh
 
-CONFIG="/shared/config.json"
+CONFIG="/config/config.json"
 LAST_UPDATE="/app/data/last_update"
 
 echo "Setup configuration file: $CONFIG"
