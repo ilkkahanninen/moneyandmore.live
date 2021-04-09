@@ -1,12 +1,13 @@
 services:
   owncast:
-    build:
-      context: .
-      dockerfile: owncast/Dockerfile
+    build: owncast
     ports:
       - "8080:8080"
-      - "1935:1935"
+      - "19350:19350"
     volumes:
       - "owncast_data:/app/data"
+      - type: bind
+        source: ./shared
+        target: /shared
 volumes:
   owncast_data: {}

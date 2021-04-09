@@ -1,37 +1,47 @@
 #!/bin/sh
 
-CONFIG="/app/data/setup.json"
+CONFIG="/shared/config.json"
+LAST_UPDATE="/app/data/last_update"
 
 echo "Setup configuration file: $CONFIG"
-echo "Waiting Owncast to start..."
-sleep 3
 
-if [[ -e "$CONFIG" ]]; then
-  call_api() {
-    local PASSWORD="$1"
-    local ENDPOINT="$2"
-    local PROPERTY="$3"
-    local VALUE=$(jq -c $PROPERTY "$CONFIG")
-    local BODY=$(echo $VALUE | jq -c "{value: .}")
+# ---------------------------------
 
-    echo "$ENDPOINT: $VALUE"
-    curl -sk -u "admin:$PASSWORD" "http://localhost:8080/api/$ENDPOINT" -d "$BODY" | jq -r ".message"
-  }
+set_value() {
+  local PASSWORD="$1"
+  local ENDPOINT="$2"
+  local VALUE="$3"
 
-  echo Setup
+  echo "$ENDPOINT: $VALUE"
 
+  local BODY=$(echo $VALUE | jq -c "{value: .}")
+  curl -sk -u "admin:$PASSWORD" "http://localhost:8080/api/$ENDPOINT" -d "$BODY" | jq -r ".message"
+}
+
+set_from_config() {
+  set_value "$1" "$2" "$(jq -c "$3" "$CONFIG")"
+}
+
+if [[ ! -e "$LAST_UPDATE" ]] || [[ "$CONFIG" -nt "$LAST_UPDATE" ]]; then
+  echo "Configuration updated..."
+  sleep 3
+fi
+
+# TODO: This can be removed after setuping stream proxy and auth
+if [[ ! -e "$LAST_UPDATE" ]]; then
   # Set password
-  call_api "abc123" "admin/config/key" ".server.streamKey"
+  set_from_config "abc123" "admin/config/key" ".server.streamKey"
+fi
 
+if [[ ! -e "$LAST_UPDATE" ]] || [[ "$CONFIG" -nt "$LAST_UPDATE" ]]; then
   # Set server meta data
   PASSWORD=$(jq -r .server.streamKey "$CONFIG")
-  call_api "$PASSWORD" "admin/config/name" ".meta.name"
-  call_api "$PASSWORD" "admin/config/serverurl" ".meta.url"
-  call_api "$PASSWORD" "admin/config/serversummary" ".meta.about"
-  call_api "$PASSWORD" "admin/config/tags" ".meta.tags"
-  call_api "$PASSWORD" "admin/config/socialhandles" ".meta.links"
-
-  # rm "$CONFIG"
-else
-  echo "Setubbed already"
+  set_from_config "$PASSWORD" "admin/config/name" ".meta.name"
+  set_from_config "$PASSWORD" "admin/config/serverurl" ".meta.url"
+  set_from_config "$PASSWORD" "admin/config/serversummary" ".meta.about"
+  set_from_config "$PASSWORD" "admin/config/tags" ".meta.tags"
+  set_from_config "$PASSWORD" "admin/config/socialhandles" ".meta.links"
+  set_value "$PASSWORD" "admin/config/rtmpserverport" "19350"
 fi
+
+touch "$LAST_UPDATE"
