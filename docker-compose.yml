@@ -2,9 +2,6 @@ services:
   caddy:
     image: caddy:2.3.0
     restart: unless-stopped
-    networks:
-      - frontend
-      - backend
     ports:
       - "80:80"
       - "443:443"
@@ -15,16 +12,11 @@ services:
   owncast:
     build: owncast
     restart: unless-stopped
-    networks:
-      - backend
     ports:
       # - "8080:8080"
       - "1935:1935"
     volumes:
       - "owncast_data:/app/data"
-networks:
-  frontend:
-  backend:
 volumes:
   owncast_data: {}
   caddy_data: {}
