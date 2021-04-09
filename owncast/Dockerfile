@@ -4,7 +4,7 @@ RUN apk update && apk add curl && apk add jq
 
 WORKDIR /app
 COPY *.sh /app/
-COPY config.json /config
+COPY config.json /config/
 
 COPY logo.svg /app/data/logo.svg
 COPY logo.svg /app/webroot/img/
