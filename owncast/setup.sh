@@ -27,7 +27,6 @@ if [[ ! -e "$LAST_UPDATE" ]] || [[ "$CONFIG" -nt "$LAST_UPDATE" ]]; then
   sleep 3
 fi
 
-# TODO: This can be removed after setuping stream proxy and auth
 if [[ ! -e "$LAST_UPDATE" ]]; then
   # Set password
   set_from_config "abc123" "admin/config/key" ".server.streamKey"
@@ -41,7 +40,7 @@ if [[ ! -e "$LAST_UPDATE" ]] || [[ "$CONFIG" -nt "$LAST_UPDATE" ]]; then
   set_from_config "$PASSWORD" "admin/config/serversummary" ".meta.about"
   set_from_config "$PASSWORD" "admin/config/tags" ".meta.tags"
   set_from_config "$PASSWORD" "admin/config/socialhandles" ".meta.links"
-  set_value "$PASSWORD" "admin/config/rtmpserverport" "19350"
+  # set_value "$PASSWORD" "admin/config/rtmpserverport" "19350"
 fi
 
 touch "$LAST_UPDATE"

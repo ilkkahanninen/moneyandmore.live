@@ -2,5 +2,5 @@
 
 ## TODO
 
-- Reverse-proxy (nginx)
 - Stream forwarding
+- Custom rtmp auth
